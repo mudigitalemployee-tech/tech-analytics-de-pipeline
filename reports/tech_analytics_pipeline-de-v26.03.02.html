@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>Tech Analytics Pipeline — DE Pipeline Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<style type="text/css">
+body {
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:14px; line-height:1.42857; color:#333; background:#fff;
+  counter-reset:h2counter;
+}
+div.container-fluid.main-container { max-width:1200px; margin:0 auto; }
+#TOC {
+  position:fixed; top:0; width:20%; max-width:260px; max-height:85%;
+  border:1px solid #ccc; border-radius:6px; overflow:auto; overflow-y:auto;
+  margin:25px 0 20px 0; padding:0; background:#fff; z-index:1000;
+}
+#TOC ul { list-style:none; margin:0; padding:0; border:none; }
+#TOC .tocify-subheader { display:none; }
+#TOC .list-group-item {
+  display:block; padding:4px 15px; border:0; border-radius:0;
+  background-color:inherit; color:#000; cursor:pointer; font-size:14px;
+  text-decoration:none;
+}
+#TOC .tocify-subheader .list-group-item { padding-left:25px; font-size:12.6px; }
+#TOC .tocify-subheader .tocify-subheader .list-group-item { padding-left:35px; font-size:11.9px; }
+#TOC .list-group-item:hover { background-color:#f5f5f5; text-decoration:none; }
+#TOC .list-group-item.active,
+#TOC .list-group-item.active:hover,
+#TOC .list-group-item.active:focus { color:#fff; background-color:#337ab7; border-color:#337ab7; }
+.toc-content { padding-left:30px; padding-right:40px; counter-reset:h2counter; }
+.toc-content h2 {
+  font-size:30px; font-weight:400; color:#333; margin-top:30px;
+  counter-increment:h2counter; counter-reset:h3counter;
+}
+.toc-content h2::before { content:counter(h2counter) ". "; font-weight:500; }
+.toc-content h3 {
+  font-size:24px; font-weight:400; color:#333; margin-top:22px;
+  counter-increment:h3counter;
+}
+.toc-content h3::before { content:counter(h2counter) "." counter(h3counter) " "; font-weight:500; }
+h1.title { font-size:38px; color:#800000; margin-top:0; }
+.section.level2 { margin-top:20px; }
+.section.level3 { margin-top:14px; }
+table { margin:14px auto; border-collapse:collapse; border:none; font-size:12px; color:#000; width:100%; }
+thead { border-bottom:1px solid #000; vertical-align:bottom; }
+tr, th, td { text-align:left; vertical-align:middle; padding:0.5em 0.8em; border:none; }
+th { font-weight:bold; }
+tbody tr:nth-child(odd) { background:#f5f5f5; }
+tbody tr:hover { background:rgba(66,165,245,0.15); }
+.report-header { display:flex; align-items:center; padding:10px 0 18px 0; margin-bottom:20px; }
+.report-header .logo { flex:0 0 120px; }
+.report-header .logo img { height:90px; }
+.report-header .title-block { flex:1; text-align:center; }
+.report-header .title-block .title-text { font-size:28px; font-weight:500; color:#800000; }
+.report-header .title-block .author-date { font-size:14px; color:#666; margin-top:4px; }
+.report-header .spacer { flex:0 0 120px; }
+.report-footer { margin-top:60px; padding:6px 0 14px 0; border-top:2px solid #800000; text-align:center; font-size:13px; letter-spacing:0.5px; }
+.report-footer .footer-subtitle { margin-top:0; font-size:13px; color:#444; font-style:italic; }
+@media print { #TOC { display:none; } .col-sm-8 { width:100%; } .toc-content { padding-left:0; padding-right:0; } }
+</style>
+</head>
+<body>
+<div class="container-fluid main-container">
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+  <div id="TOC"></div>
+</div>
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+<!-- Header -->
+<div class="report-header">
+  <div class="logo">
+    <img src="http://upload.wikimedia.org/wikipedia/en/0/0c/Mu_Sigma_Logo.jpg" alt="Mu Sigma"/>
+  </div>
+  <div class="title-block">
+    <div class="title-text">Tech Analytics Pipeline — Data Engineering Pipeline Report</div>
+    <div class="author-date"><b>Author:</b> Ved &nbsp;|&nbsp; <b>Version:</b> 26.03.02 &nbsp;|&nbsp; <b>Date:</b> March 30, 2026</div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- S0: Executive Summary -->
+<div id="executive-summary" class="section level2">
+<h2>Executive Summary</h2>
+<p>The <strong>Tech Analytics Pipeline</strong> data engineering pipeline processed <strong>1,408 raw records</strong> across all source tables and produced <strong>1,408 clean Silver-layer records</strong> via 12 automated transformation steps. The pipeline achieved a post-transform Data Quality score of <strong>100%</strong> (8 checks passed, 0 warnings, 0 failures). Architecture pattern: <strong>MEDALLION</strong> (Bronze→Silver→Gold). PII columns detected: <strong>email, phone</strong>. Pipeline health status: <span style='color:#28a745;font-weight:700'>GREEN</span>.</p>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Project</td><td><strong>Tech Analytics Pipeline</strong></td></tr>
+<tr><td>Architecture</td><td>MEDALLION</td></tr>
+<tr><td>Pipeline Type</td><td>ETL</td></tr>
+<tr><td>Total Rows Processed</td><td>1,408</td></tr>
+<tr><td>Silver Rows</td><td>1,408</td></tr>
+<tr><td>Post-Transform DQ Score</td><td><strong>100%</strong></td></tr>
+<tr><td>Transform Steps</td><td>12</td></tr>
+<tr><td>PII Columns Masked</td><td>email, phone</td></tr>
+<tr><td>Pipeline Duration</td><td>13.9s</td></tr>
+<tr><td>Pipeline Health</td><td><strong style="color:#28a745">GREEN</strong></td></tr>
+<tr><td>Run Timestamp</td><td>2026-03-30 07:08:48 UTC</td></tr>
+<tr><td>Airflow DAG</td><td>tech_analytics_pipeline | Schedule: 0 7 * * *</td></tr>
+</tbody></table>
+</div>
+
+<!-- S1: Business Requirements (BRD) -->
+<div id="brd-section" class="section level2">
+<h2>Business Requirements Document (BRD)</h2>
+
+<p><strong>Business Goal:</strong> Build a unified SaaS analytics pipeline to automate ingestion, cleaning, and aggregation of customer, usage, and financial data for real-time KPI dashboards</p>
+<p><strong>Problem Statement:</strong> Customer, product usage, and financial data sit in 3 separate CSV exports with manual merge processes, causing delayed reporting, inconsistent churn metrics, and no audit trail.</p>
+<p><strong>Domain:</strong> Tech / SaaS Analytics &nbsp;|&nbsp;
+   <strong>Impact:</strong> CRITICAL &nbsp;|&nbsp;
+   <strong>Refresh:</strong> daily &nbsp;|&nbsp;
+   <strong>Status:</strong> <span style="color:#856404;font-weight:700">DRAFT — Pending stakeholder review</span></p>
+
+<div id="brd-stakeholders" class="section level3"><h3>Stakeholders</h3>
+<table><thead><tr><th>Name</th><th>Role</th><th>Responsibility</th></tr></thead>
+<tbody><tr><td>Analytics Lead</td><td>Data Owner</td><td>BRD sign-off and KPI definition</td></tr><tr><td>Product Team</td><td>Consumer</td><td>Product adoption dashboards</td></tr><tr><td>Finance Team</td><td>Consumer</td><td>ARR, EBITDA, Rule of 40 reporting</td></tr><tr><td>DE Team</td><td>Technical Lead</td><td>Pipeline design, build, deployment</td></tr></tbody></table></div>
+
+<div id="brd-kpis" class="section level3"><h3>KPIs This Pipeline Supports</h3>
+<table><thead><tr><th>KPI</th><th>Target</th><th>Current Baseline</th></tr></thead>
+<tbody><tr><td>Monthly Recurring Revenue (MRR)</td><td>Updated daily, <2hr SLA</td><td>Manual Excel — T+24hrs</td></tr><tr><td>Churn Rate by Plan</td><td>> 99% accuracy</td><td>Manual count — error-prone</td></tr><tr><td>Daily Active Users (DAU)</td><td>Daily refresh</td><td>Weekly manual export</td></tr><tr><td>R&D Spend %</td><td>DQ Score > 95%</td><td>No DQ tracking</td></tr><tr><td>Rule of 40</td><td>Available by 08:00 UTC</td><td>Monthly finance report</td></tr></tbody></table></div>
+
+<div id="brd-process" class="section level3"><h3>Process Transformation — As-Is vs To-Be</h3>
+<table><thead><tr><th>❌ As-Is (Current State)</th><th>✅ To-Be (Future State)</th></tr></thead>
+<tbody><tr><td>Manual CSV export from CRM</td><td>Automated Airflow DAG ingests all 3 sources</td></tr><tr><td>Manual Excel VLOOKUP merge</td><td>PII masked at Bronze→Silver boundary</td></tr><tr><td>Visual QA only</td><td>DQ gate blocks bad data</td></tr><tr><td>Shared drive upload</td><td>Gold KPIs auto-aggregated post-Silver</td></tr><tr><td>Dashboard manual refresh — T+24hrs</td><td>BI tool auto-refreshes from Gold — T+2hrs</td></tr></tbody></table></div>
+
+<div id="brd-details" class="section level3"><h3>Pain Points, Success Criteria &amp; Risks</h3>
+<table><thead><tr><th>Pain Points</th><th>Success Criteria</th><th>Risks</th><th>Assumptions</th><th>Out of Scope</th></tr></thead>
+<tbody><tr>
+<td><ul style="margin:0;padding-left:16px"><li>3 separate CSVs merged manually in Excel — 8+ hours/week</li><li>Churn rate calculation inconsistent across teams</li><li>PII (email, phone) exposed in shared reports</li><li>No data quality checks — bad data reaches dashboards</li><li>Financial SLA missed — data not ready for morning standup</li></ul></td>
+<td><ul style="margin:0;padding-left:16px"><li>Unified Silver layer with all 3 sources joined by customer_id</li><li>PII masked before any Silver write</li><li>DQ score ≥ 95% per run</li><li>Gold KPIs available by 08:00 UTC daily</li><li>Zero manual steps in production</li></ul></td>
+<td><ul style="margin:0;padding-left:16px"><li>PII exposure if masking skipped</li><li>Schema drift from CRM/billing system upgrades</li><li>Financial data arriving late — SLA breach</li></ul></td>
+<td><ul style="margin:0;padding-left:16px"><li>CSV schema stable across pipeline versions</li><li>Credentials provided before Sprint 1</li><li>Finance data available by 07:00 UTC</li></ul></td>
+<td><ul style="margin:0;padding-left:16px"><li>Real-time streaming</li><li>Front-end dashboard UI</li><li>Source system modifications</li></ul></td>
+</tr></tbody></table></div>
+</div>
+
+<!-- S2: Functional Requirements (FRD) -->
+<div id="frd-section" class="section level2">
+<h2>Functional Requirements Document (FRD)</h2>
+
+<p><strong>Pipeline Type:</strong> ETL &nbsp;|&nbsp;
+   <strong>Schedule:</strong> 0 7 * * * &nbsp;|&nbsp;
+   <strong>Load Strategy:</strong> INCREMENTAL &nbsp;|&nbsp;
+   <strong>Architecture:</strong> MEDALLION</p>
+
+<div id="frd-functional" class="section level3"><h3>Functional Requirements</h3>
+<table><thead><tr><th>ID</th><th>Requirement</th><th>Description</th><th>Priority</th></tr></thead>
+<tbody><tr><td><strong>FR-01</strong></td><td>Customer Data Ingestion</td><td>Ingest tech_customers.csv into Bronze daily at 07:00 UTC</td><td>CRITICAL</td></tr><tr><td><strong>FR-02</strong></td><td>Usage Data Ingestion</td><td>Ingest tech_product_usage.csv into Bronze daily at 07:00 UTC</td><td>CRITICAL</td></tr><tr><td><strong>FR-03</strong></td><td>Financial Data Ingestion</td><td>Ingest tech_financials.csv into Bronze daily at 07:00 UTC</td><td>CRITICAL</td></tr><tr><td><strong>FR-04</strong></td><td>PII Masking</td><td>SHA256 hash email and phone before Silver write — raw values never written to Silver</td><td>CRITICAL</td></tr><tr><td><strong>FR-05</strong></td><td>Null Handling</td><td>uptime_pct NULL→100.0; churn_date/last_login NULL retained as business signal</td><td>HIGH</td></tr><tr><td><strong>FR-06</strong></td><td>Gold — Customer KPIs</td><td>Churn rate, MRR, seats grouped by plan_type → customer_kpis_gold</td><td>HIGH</td></tr><tr><td><strong>FR-07</strong></td><td>Gold — Product Adoption</td><td>DAU, sessions, API calls, revenue by product → product_adoption_gold</td><td>HIGH</td></tr><tr><td><strong>FR-08</strong></td><td>Gold — Financial Summary</td><td>ARR, gross margin, EBITDA, Rule of 40 by company → financials_summary_gold</td><td>HIGH</td></tr><tr><td><strong>FR-09</strong></td><td>DQ Gate</td><td>Block Silver load if DQ score < 95%. Quarantine failing rows. Alert on Slack.</td><td>CRITICAL</td></tr><tr><td><strong>FR-10</strong></td><td>Lineage Tracking</td><td>Log source→Bronze→Silver→Gold lineage per pipeline run</td><td>MEDIUM</td></tr></tbody></table></div>
+
+<div id="frd-nfr" class="section level3"><h3>Non-Functional Requirements</h3>
+<table><thead><tr><th>Requirement</th><th>Specification</th></tr></thead>
+<tbody><tr><td>Pipeline Sla</td><td>Gold KPIs available by 08:00 UTC daily</td></tr><tr><td>Availability</td><td>99.5% uptime</td></tr><tr><td>Security</td><td>PII never in Silver/Gold; credentials via env vars</td></tr><tr><td>Scalability</td><td>Handle 10x growth without architecture change</td></tr><tr><td>Audit</td><td>Full run log with row counts, DQ scores, transform steps</td></tr></tbody></table></div>
+
+<div id="frd-dq" class="section level3"><h3>Data Quality Rules</h3>
+<table><thead><tr><th>Rule</th><th>Threshold / Specification</th></tr></thead>
+<tbody><tr><td>Max Null Pct</td><td>5% per column (except intentional nulls)</td></tr><tr><td>Max Duplicate Pct</td><td>0% — zero tolerance</td></tr><tr><td>Dq Pass Threshold</td><td>95% overall score</td></tr><tr><td>Pii Masking</td><td>100% — no raw PII in Silver or Gold</td></tr><tr><td>Mrr Range</td><td>$0 – $50,000 per customer</td></tr><tr><td>Churn Rate Range</td><td>0% – 100% per segment</td></tr></tbody></table></div>
+</div>
+
+<!-- S3: Use Cases -->
+<div id="use-cases" class="section level2">
+<h2>Use Cases</h2>
+<p>Structured use cases derived from BRD/FRD context — actors, flows, pre/postconditions.</p>
+
+<div id="uc-uc-01" class="section level3">
+<h3>UC-01 — Automated Data Ingestion</h3>
+<p><span style="background:#f8d7da;color:#721c24;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700">CRITICAL</span>
+&nbsp;&nbsp;<strong>Actor:</strong> Pipeline Scheduler (Airflow)</p>
+<p>The system automatically ingests raw data from source on a scheduled basis (daily) without manual steps.</p>
+<table><thead><tr><th>Attribute</th><th>Detail</th></tr></thead><tbody>
+<tr><td><strong>Preconditions</strong></td><td>Source system accessible. Credentials valid. Schema stable.</td></tr>
+<tr><td><strong>Postconditions</strong></td><td>Bronze layer contains full-fidelity copy of source records for this run.</td></tr>
+</tbody></table>
+<p><strong>Flow Steps:</strong></p>
+<ol style="margin-left:20px"><li>Airflow DAG triggers on schedule</li><li>Pipeline connects and reads new/changed records</li><li>Raw data written to Bronze layer unchanged</li><li>Ingestion metadata logged</li><li>Success notification sent</li></ol>
+</div>
+<div id="uc-uc-02" class="section level3">
+<h3>UC-02 — Data Transformation & Quality Enforcement</h3>
+<p><span style="background:#f8d7da;color:#721c24;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700">CRITICAL</span>
+&nbsp;&nbsp;<strong>Actor:</strong> Transform Engine</p>
+<p>Cleaned, validated Silver layer produced from Bronze with DQ checks enforced and PII masked.</p>
+<table><thead><tr><th>Attribute</th><th>Detail</th></tr></thead><tbody>
+<tr><td><strong>Preconditions</strong></td><td>Bronze layer populated by UC-01.</td></tr>
+<tr><td><strong>Postconditions</strong></td><td>Silver layer contains clean, typed, deduped, PII-masked records with DQ score ≥ threshold.</td></tr>
+</tbody></table>
+<p><strong>Flow Steps:</strong></p>
+<ol style="margin-left:20px"><li>Read from Bronze layer</li><li>Apply column normalisation (rename, type cast, date format)</li><li>Remove duplicates</li><li>Apply null handling rules</li><li>Mask PII columns (SHA256)</li><li>Run DQ checks</li><li>DQ FAIL → halt, alert, quarantine</li><li>DQ PASS → write to Silver</li></ol>
+</div>
+<div id="uc-uc-03" class="section level3">
+<h3>UC-03 — Business Analytics Consumption</h3>
+<p><span style="background:#fff3cd;color:#856404;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700">HIGH</span>
+&nbsp;&nbsp;<strong>Actor:</strong> BI Tool / Dashboard / Analyst</p>
+<p>Product and finance teams consume Gold-layer KPIs — MRR, churn, DAU, and financial metrics — for daily decisions.</p>
+<table><thead><tr><th>Attribute</th><th>Detail</th></tr></thead><tbody>
+<tr><td><strong>Preconditions</strong></td><td>Silver layer DQ-validated. Gold aggregation job completed.</td></tr>
+<tr><td><strong>Postconditions</strong></td><td>Stakeholders have access to up-to-date pre-aggregated metrics within SLA window.</td></tr>
+</tbody></table>
+<p><strong>Flow Steps:</strong></p>
+<ol style="margin-left:20px"><li>Gold aggregation job runs after Silver load</li><li>KPI metrics calculated and written to Gold tables</li><li>BI tool refreshes from Gold layer</li><li>Analyst queries Gold for ad-hoc analysis</li><li>Automated alert if KPI threshold breached</li></ol>
+</div>
+<div id="uc-uc-04" class="section level3">
+<h3>UC-04 — Pipeline Failure Detection & Alerting</h3>
+<p><span style="background:#fff3cd;color:#856404;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700">HIGH</span>
+&nbsp;&nbsp;<strong>Actor:</strong> Monitoring System / On-Call Engineer</p>
+<p>When any stage fails, the system detects, halts, and alerts the on-call owner with actionable details.</p>
+<table><thead><tr><th>Attribute</th><th>Detail</th></tr></thead><tbody>
+<tr><td><strong>Preconditions</strong></td><td>Monitoring configured. Alert channel set.</td></tr>
+<tr><td><strong>Postconditions</strong></td><td>Failure visible within SLA. No silent failures. Bad data quarantined.</td></tr>
+</tbody></table>
+<p><strong>Flow Steps:</strong></p>
+<ol style="margin-left:20px"><li>Stage fails or DQ score below threshold</li><li>Airflow marks task FAILED</li><li>Alert sent to on-call channel</li><li>Alert contains: DAG ID, failed task, error, row count</li><li>Engineer triages and decides action</li><li>Incident logged for post-mortem</li></ol>
+</div>
+<div id="uc-uc-05" class="section level3">
+<h3>UC-05 — Historical Data Backfill & Reprocessing</h3>
+<p><span style="background:#d1ecf1;color:#0c5460;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700">MEDIUM</span>
+&nbsp;&nbsp;<strong>Actor:</strong> Data Engineer</p>
+<p>When business logic changes or a source issue is discovered, pipeline supports backfilling date ranges.</p>
+<table><thead><tr><th>Attribute</th><th>Detail</th></tr></thead><tbody>
+<tr><td><strong>Preconditions</strong></td><td>Bronze layer retains raw data. Airflow supports backfill.</td></tr>
+<tr><td><strong>Postconditions</strong></td><td>Historical data reflects updated logic. Downstream reports corrected.</td></tr>
+</tbody></table>
+<p><strong>Flow Steps:</strong></p>
+<ol style="margin-left:20px"><li>Engineer identifies backfill window</li><li>Airflow triggered with backfill parameters</li><li>Bronze re-reads source for range</li><li>Silver re-applies current transform logic</li><li>Gold re-aggregates affected periods</li><li>DQ checks on reprocessed data</li><li>Stakeholders notified</li></ol>
+</div>
+</div>
+
+<!-- S4: Source Data Profile -->
+<div id="source-profile" class="section level2">
+<h2>Source Data Profile</h2>
+<p>Raw source schema, null analysis, data types, and sample values across all ingested datasets.</p>
+
+<div id="schema-dtype" class="section level3"><h3>Column Data Type Distribution</h3>
+<table><thead><tr><th>Data Type</th><th style="text-align:right">Column Count</th><th>Share</th></tr></thead>
+<tbody><tr><td>String</td><td style="text-align:right">6</td><td>42.9%</td></tr><tr><td>Float</td><td style="text-align:right">5</td><td>35.7%</td></tr><tr><td>Integer</td><td style="text-align:right">2</td><td>14.3%</td></tr><tr><td>Boolean</td><td style="text-align:right">1</td><td>7.1%</td></tr></tbody></table></div>
+
+<div id="schema-nulls" class="section level3"><h3>Null Rate Analysis</h3>
+<table><thead><tr><th>Column</th><th style="text-align:right">Null Rate</th><th>Severity</th><th>Recommendation</th></tr></thead>
+<tbody><tr><td>churn_date</td><td style="text-align:right">82.2%</td><td>HIGH ⚠️</td><td>Review source data collection.</td></tr><tr><td>last_login_days_ago</td><td style="text-align:right">17.8%</td><td>MEDIUM</td><td>Monitor across runs.</td></tr><tr><td>uptime_pct</td><td style="text-align:right">4.2%</td><td>LOW</td><td>Monitor across runs.</td></tr></tbody></table></div>
+
+<div id="schema-full" class="section level3"><h3>Full Schema Catalog</h3>
+<table><thead><tr><th>Column</th><th>Data Type</th><th style="text-align:right">Null Rate</th><th style="text-align:right">Unique Values</th><th>Sample Values</th></tr></thead>
+<tbody><tr><td>customer_id</td><td>object</td><td style="text-align:right">0.0%</td><td style="text-align:right">500</td><td>CUST0001 · CUST0002</td></tr><tr><td>company_name</td><td>object</td><td style="text-align:right">0.0%</td><td style="text-align:right">490</td><td>Apex Systems 12</td></tr><tr><td>plan_type</td><td>object</td><td style="text-align:right">0.0%</td><td style="text-align:right">4</td><td>Free · Starter · Growth</td></tr><tr><td>mrr_usd</td><td>int64</td><td style="text-align:right">0.0%</td><td style="text-align:right">280</td><td>0 · 49 · 299</td></tr><tr><td>is_churned</td><td>bool</td><td style="text-align:right">0.0%</td><td style="text-align:right">2</td><td>True · False</td></tr><tr><td>churn_date</td><td>object</td><td style="text-align:right">82.2%</td><td style="text-align:right">89</td><td>2023-06-15 · None</td></tr><tr><td>nps_score</td><td>int64</td><td style="text-align:right">0.0%</td><td style="text-align:right">200</td><td>-45 · 32 · 78</td></tr><tr><td>last_login_days_ago</td><td>float64</td><td style="text-align:right">17.8%</td><td style="text-align:right">150</td><td>3 · 45 · None</td></tr><tr><td>email</td><td>object</td><td style="text-align:right">0.0%</td><td style="text-align:right">500</td><td>admin@corp.io</td></tr><tr><td>phone</td><td>object</td><td style="text-align:right">0.0%</td><td style="text-align:right">500</td><td>+1-555-XXXX</td></tr><tr><td>uptime_pct</td><td>float64</td><td style="text-align:right">4.2%</td><td style="text-align:right">300</td><td>99.8 · 100.0 · None</td></tr><tr><td>arr_usd</td><td>float64</td><td style="text-align:right">0.0%</td><td style="text-align:right">108</td><td>1200000 · 4500000</td></tr><tr><td>gross_margin_pct</td><td>float64</td><td style="text-align:right">0.0%</td><td style="text-align:right">100</td><td>68.4 · 72.1</td></tr><tr><td>rule_of_40</td><td>float64</td><td style="text-align:right">0.0%</td><td style="text-align:right">108</td><td>42.5 · 38.1</td></tr></tbody></table></div>
+</div>
+
+<!-- S5: Data Architecture Design -->
+<div id="architecture" class="section level2">
+<h2>Data Architecture Design</h2>
+<div id="arch-overview" class="section level3">
+<h3>Architecture Pattern</h3>
+<p><strong>Pattern:</strong> MEDALLION —
+Bronze→Silver→Gold for SaaS KPI analytics</p>
+<p><strong>Reason:</strong> 3-source join with PII masking and multi-layer aggregation</p>
+</div>
+<div id="arch-layers" class="section level3">
+<h3>Layer Definitions</h3>
+<table><thead><tr><th>Layer</th><th>Table Name</th><th>Purpose</th><th>What Lives Here</th><th>Who Uses It</th></tr></thead><tbody>
+<tr><td><strong style="color:#856404">Bronze</strong></td><td><code>tech_analytics_pipeline_bronze</code></td><td>Raw ingestion — full-fidelity source copy</td><td>Unmodified source records incl. duplicates and nulls</td><td>Data engineers for debugging and re-processing</td></tr>
+<tr><td><strong style="color:#6c757d">Silver</strong></td><td><code>tech_analytics_pipeline_silver</code></td><td>Cleaned and conformed — single reliable version</td><td>Deduped, typed, PII-masked, null-handled records</td><td>Data scientists, analysts, Gold aggregation jobs</td></tr>
+<tr><td><strong style="color:#28a745">Gold</strong></td><td><code>tech_analytics_pipeline_gold_*</code></td><td>Business-ready KPI aggregations</td><td>Pre-aggregated metrics for dashboards and reporting</td><td>BI tools, executives, business stakeholders</td></tr>
+</tbody></table>
+</div>
+<div id="arch-ddl" class="section level3">
+<h3>Target DDL (Silver Layer)</h3>
+<pre style="background:#f8f9fa;border:1px solid #dee2e6;border-radius:4px;padding:16px;font-size:11px;overflow-x:auto">-- Silver Layer DDL — Tech Analytics Pipeline
+-- Generated by Ved · Mu Sigma Data Engineering Skill
+
+CREATE TABLE tech_silver_customers (
+    customer_id           VARCHAR(20) PRIMARY KEY,
+    company_name          VARCHAR(200) NOT NULL,
+    industry              VARCHAR(60),
+    region                VARCHAR(60),
+    plan_type             VARCHAR(20) NOT NULL,
+    signup_date           DATE NOT NULL,
+    mrr_usd               INTEGER DEFAULT 0,
+    seats                 INTEGER DEFAULT 1,
+    tenure_months         INTEGER DEFAULT 0,
+    is_churned            BOOLEAN DEFAULT FALSE,
+    churn_date            DATE,                         -- NULL = active customer
+    nps_score             INTEGER,
+    acquisition_channel   VARCHAR(60),
+    support_tickets_ytd   INTEGER DEFAULT 0,
+    last_login_days_ago   INTEGER,                      -- NULL = churned
+    email_hashed          VARCHAR(64),                  -- SHA256 masked PII
+    phone_hashed          VARCHAR(64),                  -- SHA256 masked PII
+    _pipeline_run_ts      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tech_silver_product_usage (
+    usage_id              INTEGER PRIMARY KEY,
+    customer_id           VARCHAR(20) REFERENCES tech_silver_customers(customer_id),
+    product_name          VARCHAR(100) NOT NULL,
+    month                 DATE NOT NULL,
+    daily_active_users    INTEGER DEFAULT 0,
+    total_sessions        INTEGER DEFAULT 0,
+    feature_adoptions     INTEGER DEFAULT 0,
+    api_calls             INTEGER DEFAULT 0,
+    storage_used_gb       NUMERIC(10,2) DEFAULT 0.0,
+    uptime_pct            NUMERIC(6,3) DEFAULT 100.0,   -- NULL filled to 100.0
+    support_tickets       INTEGER DEFAULT 0,
+    crashes_reported      INTEGER DEFAULT 0,
+    revenue_attributed_usd NUMERIC(12,2) DEFAULT 0.0,
+    _pipeline_run_ts      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tech_silver_financials (
+    fin_id                INTEGER PRIMARY KEY,
+    company               VARCHAR(200) NOT NULL,
+    month                 DATE NOT NULL,
+    arr_usd               NUMERIC(15,2),
+    cogs_usd              NUMERIC(15,2),
+    gross_profit_usd      NUMERIC(15,2),
+    gross_margin_pct      NUMERIC(6,2),
+    rd_spend_usd          NUMERIC(15,2),
+    sales_marketing_usd   NUMERIC(15,2),
+    ebitda_usd            NUMERIC(15,2),
+    new_logos             INTEGER DEFAULT 0,
+    expansion_revenue_usd NUMERIC(15,2) DEFAULT 0.0,
+    headcount             INTEGER,
+    rule_of_40            NUMERIC(6,1),
+    _pipeline_run_ts      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</pre>
+</div>
+</div>
+
+<!-- S6: Ingestion Summary -->
+<div id="ingestion" class="section level2">
+<h2>Ingestion Summary</h2>
+<div id="ingest-funnel" class="section level3">
+<h3>Row Count Funnel</h3>
+
+<table><thead><tr><th>Stage</th><th>Row Count</th><th>Change</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><strong>Extracted (Bronze)</strong></td><td>1,408</td><td>—</td><td>Raw source records, untouched</td></tr>
+<tr><td><strong>After Transform (Silver)</strong></td><td>1,408</td><td>−0 (0.0%)</td><td>After dedup, null handling, business rules</td></tr>
+<tr><td><strong>Ready to Load (Gold)</strong></td><td>1,408</td><td>Retention: 100.0%</td><td>Aggregated and ready for destination</td></tr>
+</tbody></table>
+</div>
+<div id="ingest-meta" class="section level3">
+<h3>Ingestion Metadata</h3>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Source</td><td>tech_customers.csv + tech_product_usage.csv + tech_financials.csv</td></tr>
+<tr><td>Rows Extracted</td><td>1,408</td></tr>
+<tr><td>Columns Extracted</td><td>44</td></tr>
+<tr><td>Pre-Transform DQ Score</td><td>75%</td></tr>
+<tr><td>Extraction Duration</td><td>4.80s</td></tr>
+<tr><td>PII Columns Detected</td><td>email, phone</td></tr>
+</tbody></table>
+</div>
+</div>
+
+<!-- S7: Transformation Log -->
+<div id="transformation" class="section level2">
+<h2>Transformation Log</h2>
+<p>Complete audit trail of all transformation steps applied from Bronze to Silver layer.</p>
+
+<p><strong>12 transformation steps applied successfully.</strong></p>
+<ul style="margin-left:20px;margin-bottom:16px"><li><strong>1.&nbsp;Column Normalisation</strong> — Standardised all column names to snake_case lowercase</li><li><strong>2.&nbsp;PII Masking — email</strong> — SHA256 hashed email column → email_hashed</li><li><strong>3.&nbsp;PII Masking — phone</strong> — SHA256 hashed phone column → phone_hashed</li><li><strong>4.&nbsp;Null Fill — churn_date</strong> — NULL retained as signal: NULL = active customer</li><li><strong>5.&nbsp;Null Fill — last_login_days_ago</strong> — NULL retained as signal: NULL = churned customer</li><li><strong>6.&nbsp;Null Fill — uptime_pct</strong> — NULL uptime filled with 100.0 (no reported outage)</li><li><strong>7.&nbsp;Type Casting — dates</strong> — All date strings cast to ISO DATE format</li><li><strong>8.&nbsp;Type Casting — numerics</strong> — mrr_usd, seats, tenure_months cast to INTEGER; financials to FLOAT</li><li><strong>9.&nbsp;Boolean Casting — is_churned</strong> — 'True'/'False' strings cast to boolean</li><li><strong>10.&nbsp;Gold Aggregation — Customer KPIs</strong> — Churn rate, total MRR, avg MRR grouped by plan_type</li><li><strong>11.&nbsp;Gold Aggregation — Product Adoption</strong> — DAU, sessions, API calls, revenue grouped by product</li><li><strong>12.&nbsp;Gold Aggregation — Financial Summary</strong> — Avg ARR, gross margin, EBITDA, Rule of 40 grouped by company</li></ul>
+<table><thead><tr><th style="text-align:right">#</th><th>Action</th><th>Description</th><th>Before</th><th>After</th><th style="text-align:right">Rows Affected</th></tr></thead>
+<tbody><tr><td style="text-align:right">1</td><td>Column Normalisation</td><td>Standardised all column names to snake_case lowercase</td><td style="font-size:11px">Mixed case</td><td style="font-size:11px;color:#28a745">snake_case</td><td style="text-align:right">1408</td></tr><tr><td style="text-align:right">2</td><td>PII Masking — email</td><td>SHA256 hashed email column → email_hashed</td><td style="font-size:11px">admin@corp.io</td><td style="font-size:11px;color:#28a745">SHA256 hash</td><td style="text-align:right">500</td></tr><tr><td style="text-align:right">3</td><td>PII Masking — phone</td><td>SHA256 hashed phone column → phone_hashed</td><td style="font-size:11px">+1-555-XXXX</td><td style="font-size:11px;color:#28a745">SHA256 hash</td><td style="text-align:right">500</td></tr><tr><td style="text-align:right">4</td><td>Null Fill — churn_date</td><td>NULL retained as signal: NULL = active customer</td><td style="font-size:11px">empty string</td><td style="font-size:11px;color:#28a745">None (intentional)</td><td style="text-align:right">411</td></tr><tr><td style="text-align:right">5</td><td>Null Fill — last_login_days_ago</td><td>NULL retained as signal: NULL = churned customer</td><td style="font-size:11px">empty string</td><td style="font-size:11px;color:#28a745">None (intentional)</td><td style="text-align:right">89</td></tr><tr><td style="text-align:right">6</td><td>Null Fill — uptime_pct</td><td>NULL uptime filled with 100.0 (no reported outage)</td><td style="font-size:11px">None / blank</td><td style="font-size:11px;color:#28a745">100.0</td><td style="text-align:right">34</td></tr><tr><td style="text-align:right">7</td><td>Type Casting — dates</td><td>All date strings cast to ISO DATE format</td><td style="font-size:11px">string</td><td style="font-size:11px;color:#28a745">DATE</td><td style="text-align:right">1408</td></tr><tr><td style="text-align:right">8</td><td>Type Casting — numerics</td><td>mrr_usd, seats, tenure_months cast to INTEGER; financials to FLOAT</td><td style="font-size:11px">string</td><td style="font-size:11px;color:#28a745">int/float</td><td style="text-align:right">1408</td></tr><tr><td style="text-align:right">9</td><td>Boolean Casting — is_churned</td><td>'True'/'False' strings cast to boolean</td><td style="font-size:11px">'True'/'False' string</td><td style="font-size:11px;color:#28a745">bool</td><td style="text-align:right">500</td></tr><tr><td style="text-align:right">10</td><td>Gold Aggregation — Customer KPIs</td><td>Churn rate, total MRR, avg MRR grouped by plan_type</td><td style="font-size:11px">row-level</td><td style="font-size:11px;color:#28a745">4 plan-level rows</td><td style="text-align:right">500</td></tr><tr><td style="text-align:right">11</td><td>Gold Aggregation — Product Adoption</td><td>DAU, sessions, API calls, revenue grouped by product</td><td style="font-size:11px">row-level</td><td style="font-size:11px;color:#28a745">8 product-level rows</td><td style="text-align:right">800</td></tr><tr><td style="text-align:right">12</td><td>Gold Aggregation — Financial Summary</td><td>Avg ARR, gross margin, EBITDA, Rule of 40 grouped by company</td><td style="font-size:11px">row-level</td><td style="font-size:11px;color:#28a745">6 company-level rows</td><td style="text-align:right">108</td></tr></tbody></table>
+</div>
+
+<!-- S8: Data Quality Scorecard -->
+<div id="dq-scorecard" class="section level2">
+<h2>Data Quality Scorecard</h2>
+<div id="dq-summary-scores" class="section level3">
+<h3>DQ Score Summary</h3>
+<table><thead><tr><th>Stage</th><th>DQ Score</th><th>PASS</th><th>WARN</th><th>FAIL</th></tr></thead><tbody>
+<tr><td>Pre-Transform (Bronze)</td><td><strong>75%</strong></td><td style="color:#28a745">6</td><td style="color:#856404">2</td><td style="color:#721c24">1</td></tr>
+<tr><td>Post-Transform (Silver)</td><td><strong>100%</strong></td><td style="color:#28a745">8</td><td style="color:#856404">0</td><td style="color:#721c24">0</td></tr>
+</tbody></table>
+</div>
+<div id="dq-by-category" class="section level3">
+<h3>DQ Results by Category</h3>
+<p><strong>Pre-Transform DQ Results by Category</strong></p>
+<table><thead><tr><th>Category</th><th style="text-align:right">PASS</th><th style="text-align:right">WARN</th><th style="text-align:right">FAIL</th><th style="text-align:right">Total</th></tr></thead>
+<tbody><tr><td>Completeness</td><td style="color:#28a745;font-weight:700;text-align:right">1</td><td style="color:#856404;font-weight:700;text-align:right">2</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">3</td></tr><tr><td>Uniqueness</td><td style="color:#28a745;font-weight:700;text-align:right">2</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">2</td></tr><tr><td>Validity</td><td style="color:#28a745;font-weight:700;text-align:right">1</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">1</td></tr><tr><td>Referential</td><td style="color:#28a745;font-weight:700;text-align:right">1</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">1</td></tr><tr><td>Compliance</td><td style="color:#28a745;font-weight:700;text-align:right">0</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">1</td><td style="font-weight:700;text-align:right">1</td></tr></tbody></table>
+<p><strong>Post-Transform DQ Results by Category</strong></p>
+<table><thead><tr><th>Category</th><th style="text-align:right">PASS</th><th style="text-align:right">WARN</th><th style="text-align:right">FAIL</th><th style="text-align:right">Total</th></tr></thead>
+<tbody><tr><td>Completeness</td><td style="color:#28a745;font-weight:700;text-align:right">3</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">3</td></tr><tr><td>Uniqueness</td><td style="color:#28a745;font-weight:700;text-align:right">2</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">2</td></tr><tr><td>Validity</td><td style="color:#28a745;font-weight:700;text-align:right">1</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">1</td></tr><tr><td>Referential</td><td style="color:#28a745;font-weight:700;text-align:right">1</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">1</td></tr><tr><td>Compliance</td><td style="color:#28a745;font-weight:700;text-align:right">1</td><td style="color:#856404;font-weight:700;text-align:right">0</td><td style="color:#721c24;font-weight:700;text-align:right">0</td><td style="font-weight:700;text-align:right">1</td></tr></tbody></table>
+</div>
+<div id="dq-detail" class="section level3">
+<h3>Post-Transform DQ Check Detail</h3>
+<table><thead><tr><th>Check</th><th>Category</th><th>Status</th><th>Detail</th></tr></thead>
+<tbody><tr><td>Null rate — churn_date</td><td>Completeness</td><td><span style="background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:700">PASS</span></td><td style="font-size:11px">NULL retained intentionally — documented as signal</td></tr><tr><td>Null rate — last_login_days_ago</td><td>Completeness</td><td><span style="background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:700">PASS</span></td><td style="font-size:11px">NULL retained intentionally — documented as signal</td></tr><tr><td>Null rate — uptime_pct</td><td>Completeness</td><td><span style="background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:700">PASS</span></td><td style="font-size:11px">0.0% after fill with 100.0</td></tr><tr><td>Duplicate customer_id</td><td>Uniqueness</td><td><span style="background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:700">PASS</span></td><td style="font-size:11px">0 duplicates in Silver</td></tr><tr><td>Duplicate usage_id</td><td>Uniqueness</td><td><span style="background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:700">PASS</span></td><td style="font-size:11px">0 duplicates in Silver</td></tr><tr><td>mrr_usd >= 0</td><td>Validity</td><td><span style="background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:700">PASS</span></td><td style="font-size:11px">All values valid</td></tr><tr><td>plan_type in known values</td><td>Referential</td><td><span style="background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:700">PASS</span></td><td style="font-size:11px">All plans valid</td></tr><tr><td>PII columns masked</td><td>Compliance</td><td><span style="background:#d4edda;color:#155724;padding:1px 7px;border-radius:3px;font-size:11px;font-weight:700">PASS</span></td><td style="font-size:11px">email→email_hashed | phone→phone_hashed (SHA256)</td></tr></tbody></table>
+</div>
+</div>
+
+<!-- S9: Data Lineage -->
+<div id="lineage" class="section level2">
+<h2>Data Lineage</h2>
+<p>End-to-end data flow from source through all transformation steps to destination layers.</p>
+
+<table><thead><tr><th>Source Node</th><th style="text-align:center">Flow</th><th>Target Node</th><th style="text-align:right">Volume (rows)</th><th>Transform Label</th></tr></thead>
+<tbody><tr><td><strong>tech_customers.csv</strong></td><td style="text-align:center">→</td><td><strong>Bronze Layer</strong></td><td style="text-align:right">500</td><td>Raw ingest</td></tr><tr><td><strong>tech_product_usage.csv</strong></td><td style="text-align:center">→</td><td><strong>Bronze Layer</strong></td><td style="text-align:right">800</td><td>Raw ingest</td></tr><tr><td><strong>tech_financials.csv</strong></td><td style="text-align:center">→</td><td><strong>Bronze Layer</strong></td><td style="text-align:right">108</td><td>Raw ingest</td></tr><tr><td><strong>Bronze Layer</strong></td><td style="text-align:center">→</td><td><strong>PII Masking + Type Cast</strong></td><td style="text-align:right">1,408</td><td>Transform</td></tr><tr><td><strong>PII Masking + Type Cast</strong></td><td style="text-align:center">→</td><td><strong>DQ Gate</strong></td><td style="text-align:right">1,408</td><td>Post-transform</td></tr><tr><td><strong>DQ Gate</strong></td><td style="text-align:center">→</td><td><strong>Silver — Customers</strong></td><td style="text-align:right">500</td><td>DQ PASS</td></tr><tr><td><strong>DQ Gate</strong></td><td style="text-align:center">→</td><td><strong>Silver — Usage</strong></td><td style="text-align:right">800</td><td>DQ PASS</td></tr><tr><td><strong>DQ Gate</strong></td><td style="text-align:center">→</td><td><strong>Silver — Financials</strong></td><td style="text-align:right">108</td><td>DQ PASS</td></tr><tr><td><strong>Silver — Customers</strong></td><td style="text-align:center">→</td><td><strong>Gold — Customer KPIs</strong></td><td style="text-align:right">4</td><td>Aggregation</td></tr><tr><td><strong>Silver — Usage</strong></td><td style="text-align:center">→</td><td><strong>Gold — Product Adoption</strong></td><td style="text-align:right">8</td><td>Aggregation</td></tr><tr><td><strong>Silver — Financials</strong></td><td style="text-align:center">→</td><td><strong>Gold — Financials Summary</strong></td><td style="text-align:right">6</td><td>Aggregation</td></tr></tbody></table>
+</div>
+
+<!-- S10: Pipeline Orchestration -->
+<div id="orchestration" class="section level2">
+<h2>Pipeline Orchestration</h2>
+<div id="orch-config" class="section level3">
+<h3>DAG Configuration</h3>
+<table><thead><tr><th>Component</th><th>Detail</th></tr></thead><tbody>
+<tr><td>DAG ID</td><td><code>tech_analytics_pipeline</code></td></tr>
+<tr><td>Schedule</td><td><code>0 7 * * *</code></td></tr>
+<tr><td>Retries</td><td>3 retries · 5-minute delay</td></tr>
+<tr><td>Max Active Runs</td><td>1 (prevents concurrent execution)</td></tr>
+<tr><td>SLA</td><td>2 hours (configurable)</td></tr>
+<tr><td>DQ Gate</td><td>BranchPythonOperator → PASS: load | FAIL: alert + halt</td></tr>
+<tr><td>Task Flow</td><td>extract → transform → DQ gate → load → validate → notify</td></tr>
+</tbody></table>
+</div>
+<div id="orch-monitoring" class="section level3">
+<h3>Monitoring Metrics</h3>
+<p><strong>Pipeline Health:</strong> <span style="color:#28a745;font-weight:700">GREEN</span></p>
+<table><thead><tr><th>Metric</th><th>Description</th><th>Baseline</th><th>WARN Threshold</th><th>FAIL Threshold</th><th>Cadence</th></tr></thead>
+<tbody><tr><td>Row Count</td><td style="font-size:11px">Total rows processed</td><td>1408</td><td style="color:#856404"><1200</td><td style="color:#721c24"><800</td><td>every run</td></tr><tr><td>Dq Score</td><td style="font-size:11px">Post-transform DQ score</td><td>100%</td><td style="color:#856404"><95%</td><td style="color:#721c24"><80%</td><td>every run</td></tr><tr><td>Pipeline Latency</td><td style="font-size:11px">End-to-end duration</td><td>~10s</td><td style="color:#856404">>120s</td><td style="color:#721c24">>300s</td><td>every run</td></tr><tr><td>Pii Mask Check</td><td style="font-size:11px">Confirm email/phone not in Silver</td><td>0 raw PII</td><td style="color:#856404">any raw PII</td><td style="color:#721c24">any raw PII</td><td>every run</td></tr><tr><td>Financial Sla</td><td style="font-size:11px">Gold financials available by 08:00 UTC</td><td>07:50 UTC</td><td style="color:#856404">>07:55 UTC</td><td style="color:#721c24">>08:00 UTC</td><td>every run</td></tr><tr><td>Churn Rate Drift</td><td style="font-size:11px">Churn rate change vs prior run</td><td>±2%</td><td style="color:#856404">>5% change</td><td style="color:#721c24">>15% change</td><td>every run</td></tr></tbody></table>
+</div>
+</div>
+
+<!-- S11: Business Insights & Recommendations -->
+<div id="insights" class="section level2">
+<h2>Business Insights &amp; Recommendations</h2>
+<p>CXO-grade observations from this pipeline run — prioritised by severity and business impact.</p>
+<table><thead><tr><th>Priority</th><th>Finding</th><th>Rationale</th><th>Recommended Action</th><th>Expected Impact</th></tr></thead>
+<tbody><tr><td><strong>P2</strong></td><td>Row Retention: 100.0% (0 rows removed)</td><td style="font-size:11px">Pipeline removed 0 rows during transformation. Minimal loss — clean source data.</td><td style="font-size:11px">No action required — monitor across runs.</td><td style="font-size:11px">Pipeline operating within expected parameters.</td></tr><tr><td><strong>P2</strong></td><td>DQ Score: 100% — Target Met ✅</td><td style="font-size:11px">All 8 DQ checks passed post-transform.</td><td style="font-size:11px">Continue monitoring DQ score across runs. Set up drift alerts.</td><td style="font-size:11px">Reliable, trusted data in Gold layer.</td></tr><tr><td><strong>P0</strong></td><td>PII Alert: 2 Sensitive Column(s) — email, phone</td><td style="font-size:11px">PII detected in source. Must be masked before Silver write.</td><td style="font-size:11px">Confirm SHA256 masking applied. Audit Silver layer for raw PII.</td><td style="font-size:11px">GDPR/regulatory compliance. Prevent PII exposure in dashboards.</td></tr><tr><td><strong>P2</strong></td><td>Architecture: MEDALLION — Fit Assessment</td><td style="font-size:11px">Bronze→Silver→Gold separation preserves raw data, enables clean analytics, and serves business KPIs efficiently.</td><td style="font-size:11px">Review architecture quarterly as data volume and use cases grow.</td><td style="font-size:11px">Sustainable pipeline design aligned to business scale.</td></tr><tr><td><strong>P1</strong></td><td>High Null Rate: 2 Column(s) Above 15%</td><td style="font-size:11px">Columns ['churn_date', 'last_login_days_ago'] have null rates above 15%.</td><td style="font-size:11px">Investigate upstream data collection. Define acceptable null thresholds.</td><td style="font-size:11px">Improve data completeness and downstream KPI accuracy.</td></tr><tr><td><strong>P2</strong></td><td>12 Transformation Steps Completed</td><td style="font-size:11px">All transformation steps applied without errors. Full audit log available.</td><td style="font-size:11px">Review transform log periodically for redundant or obsolete steps.</td><td style="font-size:11px">Reproducible, auditable pipeline with documented transformation history.</td></tr></tbody></table>
+</div>
+
+<!-- Footer -->
+<div class="report-footer">
+  <div class="footer-subtitle" id="footer-dynamic-text"></div>
+</div>
+<script>
+(function() {
+  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var now = new Date();
+  document.getElementById("footer-dynamic-text").textContent =
+    "Confidential — Mu Sigma, Inc. — " + months[now.getMonth()] + " " + now.getFullYear();
+})();
+</script>
+
+</div><!-- /toc-content -->
+</div><!-- /row -->
+</div><!-- /main-container -->
+
+<!-- TOC Builder (canonical MuSigma template script) -->
+<script>
+$(document).ready(function() {
+  var $toc = $('#TOC');
+  var $content = $('.toc-content');
+  var headers = [];
+  var headerIdCounter = 0;
+  $content.find('h2, h3').each(function() {
+    var $h = $(this);
+    var level = this.tagName === 'H2' ? 2 : 3;
+    var id = $h.attr('id');
+    if (!id) { var $parent = $h.closest('.section[id]'); if ($parent.length) id = $parent.attr('id'); }
+    if (!id) { id = 'section-' + headerIdCounter; $h.attr('id', id); }
+    headerIdCounter++;
+    headers.push({ text: $h.text().trim(), id: id, level: level, el: $h });
+  });
+  if (!headers.length) return;
+  var h2n = 0, h3n = 0, html = '', inHeader = false, inSub = false, hIdx = 0;
+  for (var i = 0; i < headers.length; i++) {
+    var h = headers[i]; var label = '';
+    if (h.level === 2) {
+      h2n++; h3n = 0; label = h2n + '. ' + h.text;
+      if (inSub) { html += '</ul>'; inSub = false; }
+      if (inHeader) { html += '</ul>'; inHeader = false; }
+      html += '<ul id="tocify-header' + hIdx + '" class="tocify-header list-group">';
+      html += '<li class="tocify-item list-group-item" data-unique="' + h.id + '">' + label + '</li>';
+      inHeader = true; hIdx++;
+    } else if (h.level === 3) {
+      h3n++; label = h2n + '.' + h3n + ' ' + h.text;
+      if (!inSub) { html += '<ul class="tocify-subheader list-group" data-tag="3">'; inSub = true; }
+      html += '<li class="tocify-item list-group-item" data-unique="' + h.id + '">' + label + '</li>';
+    }
+  }
+  if (inSub) html += '</ul>'; if (inHeader) html += '</ul>';
+  $toc.html(html);
+  $toc.find('.list-group-item').first().addClass('active');
+  function showActiveSub() {
+    var $active = $toc.find('.list-group-item.active');
+    var $parentUl = $active.closest('.tocify-header');
+    var $subParent = $active.closest('.tocify-subheader');
+    var $targetSub = $parentUl.length ? $parentUl.find('.tocify-subheader') : $subParent;
+    $toc.find('.tocify-subheader').not($targetSub).slideUp(150);
+    if ($targetSub && $targetSub.length && $targetSub.is(':hidden')) $targetSub.slideDown(250);
+  }
+  showActiveSub();
+  var isScrolling = false;
+  $toc.on('click', '.list-group-item', function(e) {
+    e.preventDefault();
+    var targetId = $(this).data('unique');
+    var $target = $('[id="' + targetId + '"]').first();
+    if ($target.length) {
+      isScrolling = true;
+      $toc.find('.list-group-item').removeClass('active');
+      $(this).addClass('active'); showActiveSub();
+      $('html, body').stop().animate({ scrollTop: $target.offset().top - 60 }, 400, function() {
+        setTimeout(function() { isScrolling = false; }, 100);
+      });
+    }
+  });
+  var scrollTimer;
+  $(window).on('scroll', function() {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+      if (isScrolling) return;
+      var scrollTop = $(window).scrollTop() + 80;
+      var activeHeader = null;
+      for (var j = headers.length - 1; j >= 0; j--) {
+        var $el = headers[j].el;
+        var $section = $el.closest('.section[id]');
+        var top = ($section.length ? $section : $el).offset().top;
+        if (top <= scrollTop) { activeHeader = headers[j]; break; }
+      }
+      if (activeHeader) {
+        $toc.find('.list-group-item').removeClass('active');
+        $toc.find('.list-group-item[data-unique="' + activeHeader.id + '"]').addClass('active');
+        showActiveSub();
+      }
+    }, 50);
+  });
+});
+</script>
+
+</body>
+</html>

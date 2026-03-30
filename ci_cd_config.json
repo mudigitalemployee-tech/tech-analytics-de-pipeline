@@ -1,0 +1,18 @@
+{
+  "pipeline": "tech_analytics_pipeline",
+  "ci_cd_platform": "GitHub Actions",
+  "stages": [
+    "lint",
+    "test",
+    "dq-validate",
+    "deploy"
+  ],
+  "schedule": "0 7 * * *",
+  "branching_strategy": "gitflow",
+  "secrets": [
+    "DB_CONNECTION",
+    "AIRFLOW_CONN",
+    "SLACK_WEBHOOK"
+  ],
+  "generated_by": "Ved \u2014 Mu Sigma DE Skill Phase 12"
+}
