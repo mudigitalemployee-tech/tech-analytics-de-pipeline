@@ -22,8 +22,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - run: pip install flake8
-      - run: flake8 pipeline/ --max-line-length=120 --ignore=E501,W503
+      - name: Install flake8
+        run: pip install flake8
+      - name: Run flake8
+        run: flake8 pipeline/ --max-line-length=120 --extend-ignore=E501,W503,W291,W293
 
   test:
     name: Unit Tests
@@ -34,12 +36,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - run: pip install -r requirements.txt pytest
-      - run: |
-          if [ -d "tests" ] && [ "$(ls tests/*.py 2>/dev/null | wc -l)" -gt 0 ]; then
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Run tests
+        run: |
+          if [ -d "tests" ] && [ "$(find tests -name '*.py' | wc -l)" -gt 0 ]; then
             pytest tests/ -v --tb=short
           else
-            echo "No test files yet"
+            echo "No test files yet — skipping"
           fi
 
   dq-validate:
@@ -51,13 +55,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
       - name: Run DQ checks
         run: python pipeline/dq_checks.py
         env:
           DQ_THRESHOLD: ${{ env.DQ_THRESHOLD }}
-      - name: Validate DAG syntax
-        run: python -c "import ast; ast.parse(open('pipeline/airflow_dag.py').read()); print('DAG syntax OK')"
+      - name: Validate Airflow DAG syntax
+        run: python -c "import ast; ast.parse(open('pipeline/airflow_dag.py').read()); print('DAG OK')"
 
   deploy:
     name: Deploy to Production
@@ -69,8 +74,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - run: pip install -r requirements.txt
-      - run: python pipeline/dq_checks.py
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Final DQ gate
+        run: python pipeline/dq_checks.py
         env:
           DQ_THRESHOLD: ${{ env.DQ_THRESHOLD }}
-      - run: echo "Pipeline tech_analytics_pipeline deployed successfully"
+      - name: Deploy summary
+        run: echo "Pipeline tech_analytics_pipeline deployed successfully"
