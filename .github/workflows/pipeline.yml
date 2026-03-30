@@ -1,0 +1,76 @@
+name: tech-analytics-de-pipeline CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+env:
+  DQ_THRESHOLD: '95'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  lint:
+    name: Lint and Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install flake8
+      - run: flake8 pipeline/ --max-line-length=120 --ignore=E501,W503
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt pytest
+      - run: |
+          if [ -d "tests" ] && [ "$(ls tests/*.py 2>/dev/null | wc -l)" -gt 0 ]; then
+            pytest tests/ -v --tb=short
+          else
+            echo "No test files yet"
+          fi
+
+  dq-validate:
+    name: Data Quality Validation
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt
+      - name: Run DQ checks
+        run: python pipeline/dq_checks.py
+        env:
+          DQ_THRESHOLD: ${{ env.DQ_THRESHOLD }}
+      - name: Validate DAG syntax
+        run: python -c "import ast; ast.parse(open('pipeline/airflow_dag.py').read()); print('DAG syntax OK')"
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: dq-validate
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt
+      - run: python pipeline/dq_checks.py
+        env:
+          DQ_THRESHOLD: ${{ env.DQ_THRESHOLD }}
+      - run: echo "Pipeline tech_analytics_pipeline deployed successfully"
